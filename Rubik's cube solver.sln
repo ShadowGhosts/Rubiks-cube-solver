@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubik's cube solver", "Raspberry win app\Rubik's cube solver.csproj", "{06DC09EA-9F56-446A-BA76-418E9B63C4E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubik's cube solver", "Rubiks cube solver\Rubik's cube solver.csproj", "{06DC09EA-9F56-446A-BA76-418E9B63C4E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
