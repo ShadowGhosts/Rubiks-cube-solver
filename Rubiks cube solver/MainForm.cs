@@ -23,10 +23,12 @@ using AForge.Controls;
 
 
 
+
 namespace Rubiks_cube_solver_app
 {
     public partial class MainForm : Form
     {
+
         //veriable for used port numbers
         private string[] ports = SerialPort.GetPortNames();
         
@@ -35,6 +37,9 @@ namespace Rubiks_cube_solver_app
         private VideoCaptureDevice Camera1;
         private VideoCaptureDevice Camera2;
         private VideoCapabilities[] snapshotCapabilities;
+
+        //Create port class
+       // private Serial_Com Serial_Com_Ardu;
 
         public MainForm()
         {
@@ -115,6 +120,8 @@ namespace Rubiks_cube_solver_app
         {
             PortSelect.Enabled = enable;
             ConnectPort.Enabled = enable;
+            SolveButton.Enabled = !enable;
+            Scramble.Enabled = !enable;
             DisconnectPort.Enabled = !enable;
         }
 
@@ -494,7 +501,7 @@ namespace Rubiks_cube_solver_app
             label4.Text = fU1.ToString();
             label3.Text = fU2.ToString();
             label5.Text = fU8.ToString();
-            label6.Text = fU9.ToString();
+           // label6.Text = fU9.ToString();
         }
 
         private void GetColorLayoutCamera2(Bitmap test)
@@ -571,7 +578,7 @@ namespace Rubiks_cube_solver_app
             label4.Text = fD9.ToString();
             label3.Text = fD8.ToString();
             label5.Text = fB4.ToString();
-            label6.Text = fR4.ToString();
+            //label6.Text = fR4.ToString();
             
         }
 
@@ -1492,13 +1499,118 @@ namespace Rubiks_cube_solver_app
                 Solution = Httptags.Replace(Solution, "");
                 Solution = Solution.TrimStart('\r','\n');
                 SolutionBox.Text = Solution;
+                TurnSequence = Solution;
+                TurnSequence = TurnSequence.TrimEnd('\r', '\n', '\r', '\n');
+                ServerMessage = null;
 
-                ServerMessage = null;             
-
+                count_message_array = 0;
+                Arduino_Com(count_message_array);
 
             }
 
         }
+
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+        //Serial Comunication
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+        private static readonly string MESSAGE_CONFIRM = "Z";
+        private static readonly string MESSAGE_TIMER_STOP = "Y";
+        private string TurnSequence ="";
+        private static readonly string[] Turn_Com = { "U", "F", "L", "R", "D", "B", "U'", "F'", "L'", "R'", "D'", "B'", "U2", "F2", "L2", "R2", "D2", "B2" };
+        private static readonly string[] ConvertedArray = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S" };
+        private int Array_size = 0;
+        private int count_message_array = 0;
+        private string messageSend = "";
+
+        private void Arduino_Com(int count)
+        {
+            if (ArduinoSerial.IsOpen)
+            {
+                string[] ConvertedMessage = ArrayConvert();
+                    
+                    
+
+                if (Array_size != 0 && count < Array_size)
+                {
+                    ArduinoSerial.Write(ConvertedMessage[count]);
+                    messageSend = ConvertedMessage[count];
+                }
+
+             
+            }
+            else
+            {
+                MessageBox.Show("Port not open!!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string[] ArrayConvert()
+        {
+            string[] TurnSequenceArray = TurnSequence.Split(' ');
+            string[] ConvertArray = new string[TurnSequenceArray.Length];
+            Array_size = TurnSequenceArray.Length;
+            int count = 0;
+
+            foreach( string word in TurnSequenceArray)
+            {
+                for(int i = 0; i <= 17; i++)
+                {
+                    if (word == Turn_Com[i])
+                    {
+                        ConvertArray[count] = ConvertedArray[i];
+                    }
+                   
+                }
+                count++;
+            }
+
+            return ConvertArray;
+        }
+        
+
+        private void ArduinoSerial_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+
+            string message = ArduinoSerial.ReadExisting();
+
+            //send confirmation message
+            if(message == messageSend)
+            {
+                ArduinoSerial.Write(MESSAGE_CONFIRM);      //confirmation char
+                //MessageBox.Show("Confirm message send", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            //recive confirmation message
+            else if(message == MESSAGE_CONFIRM)            
+            {
+                if(count_message_array <= Array_size)
+                {
+                    count_message_array++;
+                    Arduino_Com(count_message_array);
+                    //MessageBox.Show("Confirm message recived.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if(count_message_array == Array_size)
+                {
+                    //Sending turn sequance finished
+                    count_message_array = 0;
+                    Array_size = 0;
+                    //MessageBox.Show("Message string send finished", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ArduinoSerial.Write(MESSAGE_TIMER_STOP);
+                }
+            }
+            else if(message == MESSAGE_TIMER_STOP)
+            {
+                MessageBox.Show("Message string send finished and timer stoped", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            }
+            else
+            {
+                MessageBox.Show("ERROR \nRecived unknowen message\nRetry sending message.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Arduino_Com(count_message_array);
+            }
+
+        }
+
+
 
         private int[] CubeCode = { 6,4,2,3,1,1,5,1,5,1,5,1,5,2,4,4,2,1,6,6,3,5,3,6,4,6,6,3,4,2,2,4,6,4,1,2,5,2,1,4,5,3,3,1,2,3,2,4,3,6,5,6,3,5};
         private int[] arrayposition = {0,9,18,27,36,45};
@@ -1761,17 +1873,22 @@ namespace Rubiks_cube_solver_app
             string ScrambleCube = scrambler.Return_Combo();
 
             SolutionBox.Text = ScrambleCube;
+
+            TurnSequence = ScrambleCube;
+
+            count_message_array = 0;
+            Arduino_Com(count_message_array);
+
         }
 
-        /// <summary>
-        /// /////////////////////////////////////////////////////////////////////////////////////////////
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void SolutionBox_TextChanged(object sender, EventArgs e)
         {
-            label3.Text +=  "! ";
+            //label3.Text +=  "! ";
         }
+
+
+
     }
 }
 

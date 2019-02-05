@@ -1066,6 +1066,10 @@
             this.Camera2ConnectButton.UseVisualStyleBackColor = true;
             this.Camera2ConnectButton.Click += new System.EventHandler(this.Camera2ConnectButton_Click);
             // 
+            // ArduinoSerial
+            // 
+            this.ArduinoSerial.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.ArduinoSerial_DataReceived);
+            // 
             // PortSelect
             // 
             this.PortSelect.FormattingEnabled = true;
@@ -1188,7 +1192,7 @@
         public System.Windows.Forms.Label FaceF1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        public System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox Camera2ResolutionsCombo;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox Camera2Combo;
@@ -1234,7 +1238,7 @@
         private System.Windows.Forms.Button SolveButton;
         private System.Windows.Forms.TextBox SolutionBox;
         private System.Windows.Forms.Label label15;
-        private System.IO.Ports.SerialPort ArduinoSerial;
+        public System.IO.Ports.SerialPort ArduinoSerial;
         private System.Windows.Forms.ComboBox PortSelect;
         private System.Windows.Forms.Button ConnectPort;
         private System.Windows.Forms.Button DisconnectPort;

@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.IO;
+using System.Windows.Forms;
 
 
 namespace Rubiks_cube_solver_app
@@ -69,13 +70,21 @@ namespace Rubiks_cube_solver_app
 
             client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
 
-            Stream data = client.OpenRead(URI);
-            StreamReader reader = new StreamReader(data);
-            string s = reader.ReadToEnd();
-            data.Close();
-            reader.Close();
+            try
+            {
+                Stream data = client.OpenRead(URI);
+                StreamReader reader = new StreamReader(data);
+                string s = reader.ReadToEnd();
+                data.Close();
+                reader.Close();
 
-            return s;
+                return s;
+            }
+            catch
+            {
+                MessageBox.Show("Server not responding", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "";
+            }
         }
 
     }
