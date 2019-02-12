@@ -14,114 +14,7 @@ namespace Rubiks_cube_solver_app
 {
     class ColorDetection
     {
-        public Bitmap RedFilter(Bitmap bitmap)
-        {
-            UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
 
-            // create color filter
-            ColorFiltering RedFilter = new ColorFiltering();
-            // configure the filter to keep red object only
-            RedFilter.Red = new IntRange(110, 255);
-            RedFilter.Green = new IntRange(0, 60);
-            RedFilter.Blue = new IntRange(0, 60);
-            // filter image
-            RedFilter.ApplyInPlace(unmanagedImage);
-            Bitmap managedImage = unmanagedImage.ToManagedImage();
-            return managedImage;
-        }
-
-        //wrong filter value
-        public Bitmap BlueFilter(Bitmap bitmap)
-        {
-            UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
-            //GammaCorrection filter = new GammaCorrection(0.29999);
-            //filter.ApplyInPlace(unmanagedImage);
-            // create color filter
-            ColorFiltering BlueFilter = new ColorFiltering();
-            // configure the filter to keep red object only
-            BlueFilter.Red = new IntRange(0, 60);
-            BlueFilter.Green = new IntRange(0, 60);
-            BlueFilter.Blue = new IntRange(110, 255);
-            // filter image
-            BlueFilter.ApplyInPlace(unmanagedImage);
-            Bitmap managedImage = unmanagedImage.ToManagedImage();
-            return managedImage;
-        }
-
-        //wrong filter value
-        public Bitmap GreenFilter(Bitmap bitmap)
-        {
-            UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
-            // create color filter
-            ColorFiltering GreenFilter = new ColorFiltering();
-            // configure the filter to keep red object only
-            GreenFilter.Red = new IntRange(0, 60);
-            GreenFilter.Green = new IntRange(110, 255); ;
-            GreenFilter.Blue = new IntRange(0, 60);
-            // filter image
-            GreenFilter.ApplyInPlace(unmanagedImage);
-
-            Bitmap managedImage = unmanagedImage.ToManagedImage();
-            return managedImage;
-        }
-
-        //wrong filter value
-        public Bitmap YellowFilter(Bitmap bitmap)
-        {
-            UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
-            GammaCorrection filter = new GammaCorrection(0.29999);
-            filter.ApplyInPlace(unmanagedImage);
-            // create color filter
-            ColorFiltering YellowFilter = new ColorFiltering();
-            // configure the filter to keep red object only
-            YellowFilter.Red = new IntRange(100, 255);
-            YellowFilter.Green = new IntRange(100, 255);
-            YellowFilter.Blue = new IntRange(0, 75);
-            // filter image
-            YellowFilter.ApplyInPlace(unmanagedImage);
-            //YellowFilter.ApplyInPlace(bitmap);
-
-            Bitmap managedImage = unmanagedImage.ToManagedImage();
-            return managedImage;
-        }
-
-        //wrong filter value
-        public Bitmap OrangeFilter(Bitmap bitmap)
-        {
-            UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
-            GammaCorrection filter = new GammaCorrection(0.39999);
-            //filter.ApplyInPlace(unmanagedImage);
-            // create color filter
-            ColorFiltering OrangeFilter = new ColorFiltering();
-            // configure the filter to keep red object only
-            OrangeFilter.Red = new IntRange(110, 255);
-            OrangeFilter.Green = new IntRange(60, 150);
-            OrangeFilter.Blue = new IntRange(0, 60);
-            // filter image
-            OrangeFilter.ApplyInPlace(unmanagedImage);
-
-            Bitmap managedImage = unmanagedImage.ToManagedImage();
-            return managedImage;
-        }
-
-        //wrong filter value
-        public Bitmap WhiteFilter(Bitmap bitmap)
-        {
-            UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
-            GammaCorrection filter = new GammaCorrection(0.19999);
-            filter.ApplyInPlace(unmanagedImage);
-            // create color filter
-            ColorFiltering WhiteFilter = new ColorFiltering();
-            // configure the filter to keep red object only
-            WhiteFilter.Red = new IntRange(200, 255);
-            WhiteFilter.Green = new IntRange(200, 255);
-            WhiteFilter.Blue = new IntRange(200, 255);
-            // filter image
-            WhiteFilter.ApplyInPlace(unmanagedImage);
-
-            Bitmap managedImage = unmanagedImage.ToManagedImage();
-            return managedImage;
-        }
 
         public Color ColorFilter(Bitmap bitmap, string Face)
         {
@@ -134,6 +27,7 @@ namespace Rubiks_cube_solver_app
             Point[] FL = new Point[] { new Point(283, 246), new Point(351, 204), new Point(416, 166), new Point(286, 319), new Point(356, 278), new Point(415, 238), new Point(290, 385), new Point(345, 338), new Point(413, 292) };
             Point[] FU = new Point[] { new Point(270, 70), new Point(322, 89), new Point(378, 115), new Point(210, 93), new Point(258, 119), new Point(319, 147), new Point(145, 124), new Point(195, 148), new Point(247, 185) };
             Point[] FF = new Point[] { new Point(115, 168), new Point(162, 200), new Point(217, 235), new Point(126, 238), new Point(175, 265), new Point(228, 308), new Point(140, 295), new Point(182, 325), new Point(232, 369) };
+
 
             switch (Face)
             {
@@ -306,8 +200,248 @@ namespace Rubiks_cube_solver_app
                     return ColorCheck(FF[8], bitmap);
             }
             return Color.Gray;
-        }
 
+        }
+        public string ColorFilterString(Bitmap bitmap, string Face)
+        {
+
+
+
+            Point[] FR = new Point[] { new Point(283, 246), new Point(351, 204), new Point(416, 166), new Point(286, 319), new Point(356, 278), new Point(415, 238), new Point(290, 385), new Point(345, 338), new Point(413, 292) };
+            Point[] FD = new Point[] { new Point(270, 70), new Point(322, 89), new Point(378, 115), new Point(210, 93), new Point(258, 119), new Point(319, 147), new Point(145, 124), new Point(195, 148), new Point(247, 185) };
+            Point[] FB = new Point[] { new Point(115, 168), new Point(162, 200), new Point(217, 235), new Point(126, 238), new Point(175, 265), new Point(228, 308), new Point(140, 295), new Point(182, 325), new Point(232, 369) };
+            Point[] FL = new Point[] { new Point(283, 246), new Point(351, 204), new Point(416, 166), new Point(286, 319), new Point(356, 278), new Point(415, 238), new Point(290, 385), new Point(345, 338), new Point(413, 292) };
+            Point[] FU = new Point[] { new Point(270, 70), new Point(322, 89), new Point(378, 115), new Point(210, 93), new Point(258, 119), new Point(319, 147), new Point(145, 124), new Point(195, 148), new Point(247, 185) };
+            Point[] FF = new Point[] { new Point(115, 168), new Point(162, 200), new Point(217, 235), new Point(126, 238), new Point(175, 265), new Point(228, 308), new Point(140, 295), new Point(182, 325), new Point(232, 369) };
+
+            Color color;
+            switch (Face)
+            {
+                //Face Right
+                case "fR1":
+                    color = AreaPixelSample(FR[0], bitmap);
+                    return color.ToString();
+
+                case "fR2":
+                    color = AreaPixelSample(FR[1], bitmap);
+                    return color.ToString();
+
+                case "fR3":
+                    color = AreaPixelSample(FR[2], bitmap);
+                    return color.ToString();
+
+                case "fR4":
+                    color = AreaPixelSample(FR[3], bitmap);
+                    return color.ToString();
+
+                case "fR5":
+                    color = AreaPixelSample(FR[4], bitmap);
+                    return color.ToString();
+
+                case "fR6":
+                    color = AreaPixelSample(FR[5], bitmap);
+                    return color.ToString();
+
+                case "fR7":
+                    color = AreaPixelSample(FR[6], bitmap);
+                    return color.ToString();
+
+                case "fR8":
+                    color = AreaPixelSample(FR[7], bitmap);
+                    return color.ToString();
+
+                case "fR9":
+                    color = AreaPixelSample(FR[8], bitmap);
+                    return color.ToString();
+
+                //Face Down
+                case "fD1":
+                    color = AreaPixelSample(FD[0], bitmap);
+                    return color.ToString();
+
+                case "fD2":
+                    color = AreaPixelSample(FD[1], bitmap);
+                    return color.ToString();
+
+                case "fD3":
+                    color = AreaPixelSample(FD[2], bitmap);
+                    return color.ToString();
+
+                case "fD4":
+                    color = AreaPixelSample(FD[3], bitmap);
+                    return color.ToString();
+
+                case "fD5":
+                    color = AreaPixelSample(FD[4], bitmap);
+                    return color.ToString();
+
+                case "fD6":
+                    color = AreaPixelSample(FD[5], bitmap);
+                    return color.ToString();
+
+                case "fD7":
+                    color = AreaPixelSample(FD[6], bitmap);
+                    return color.ToString();
+
+                case "fD8":
+                    color = AreaPixelSample(FD[7], bitmap);
+                    return color.ToString();
+
+                case "fD9":
+                    color = AreaPixelSample(FD[8], bitmap);
+                    return color.ToString();
+
+                //Face Back
+                case "fB1":
+                    color = AreaPixelSample(FB[0], bitmap);
+                    return color.ToString();
+
+                case "fB2":
+                    color = AreaPixelSample(FB[1], bitmap);
+                    return color.ToString();
+
+                case "fB3":
+                    color = AreaPixelSample(FB[2], bitmap);
+                    return color.ToString();
+
+                case "fB4":
+                    color = AreaPixelSample(FB[3], bitmap);
+                    return color.ToString();
+
+                case "fB5":
+                    color = AreaPixelSample(FB[4], bitmap);
+                    return color.ToString();
+
+                case "fB6":
+                    color = AreaPixelSample(FB[5], bitmap);
+                    return color.ToString();
+
+                case "fB7":
+                    color = AreaPixelSample(FB[6], bitmap);
+                    return color.ToString();
+
+                case "fB8":
+                    color = AreaPixelSample(FB[7], bitmap);
+                    return color.ToString();
+
+                case "fB9":
+                    color = AreaPixelSample(FB[8], bitmap);
+                    return color.ToString();
+
+                //Face Left
+                case "fL1":
+                    color = AreaPixelSample(FL[0], bitmap);
+                    return color.ToString();
+
+                case "fL2":
+                    color = AreaPixelSample(FL[1], bitmap);
+                    return color.ToString();
+
+                case "fL3":
+                    color = AreaPixelSample(FL[2], bitmap);
+                    return color.ToString();
+
+                case "fL4":
+                    color = AreaPixelSample(FL[3], bitmap);
+                    return color.ToString();
+
+                case "fL5":
+                    color = AreaPixelSample(FL[4], bitmap);
+                    return color.ToString();
+
+                case "fL6":
+                    color = AreaPixelSample(FL[5], bitmap);
+                    return color.ToString();
+
+                case "fL7":
+                    color = AreaPixelSample(FL[6], bitmap);
+                    return color.ToString();
+
+                case "fL8":
+                    color = AreaPixelSample(FL[7], bitmap);
+                    return color.ToString();
+
+                case "fL9":
+                    color = AreaPixelSample(FL[8], bitmap);
+                    return color.ToString();
+
+                //Face Back
+                case "fU1":
+                    color = AreaPixelSample(FU[0], bitmap);
+                    return color.ToString();
+
+                case "fU2":
+                    color = AreaPixelSample(FU[1], bitmap);
+                    return color.ToString();
+
+                case "fU3":
+                    color = AreaPixelSample(FU[2], bitmap);
+                    return color.ToString();
+
+                case "fU4":
+                    color = AreaPixelSample(FU[3], bitmap);
+                    return color.ToString();
+
+                case "fU5":
+                    color = AreaPixelSample(FU[4], bitmap);
+                    return color.ToString();
+
+                case "fU6":
+                    color = AreaPixelSample(FU[5], bitmap);
+                    return color.ToString();
+
+                case "fU7":
+                    color = AreaPixelSample(FU[6], bitmap);
+                    return color.ToString();
+
+                case "fU8":
+                    color = AreaPixelSample(FU[7], bitmap);
+                    return color.ToString();
+
+                case "fU9":
+                    color = AreaPixelSample(FU[8], bitmap);
+                    return color.ToString();
+
+                //Face Back
+                case "fF1":
+                    color = AreaPixelSample(FF[0], bitmap);
+                    return color.ToString();
+
+                case "fF2":
+                    color = AreaPixelSample(FF[1], bitmap);
+                    return color.ToString();
+
+                case "fF3":
+                    color = AreaPixelSample(FF[2], bitmap);
+                    return color.ToString();
+
+                case "fF4":
+                    color = AreaPixelSample(FF[3], bitmap);
+                    return color.ToString();
+
+                case "fF5":
+                    color = AreaPixelSample(FF[4], bitmap);
+                    return color.ToString();
+
+                case "fF6":
+                    color = AreaPixelSample(FF[5], bitmap);
+                    return color.ToString();
+
+                case "fF7":
+                    color = AreaPixelSample(FF[6], bitmap);
+                    return color.ToString();
+
+                case "fF8":
+                    color = AreaPixelSample(FF[7], bitmap);
+                    return color.ToString();
+
+                case "fF9":
+                    color = AreaPixelSample(FF[8], bitmap);
+                    return color.ToString();
+            }
+            color = Color.Gray;
+            return color.ToString();
+        }
 
 
         private Color ColorCheck(Point SampleCenter, Bitmap bitmap)
@@ -319,65 +453,35 @@ namespace Rubiks_cube_solver_app
             Color Green = Color.Green;
             Color Yellow = Color.Yellow;
 
+            Color Sample = AreaPixelSample(SampleCenter, bitmap);
 
-            Bitmap filteredblue = BlueFilter(bitmap);
-            Bitmap filteredred = RedFilter(bitmap);
-            Bitmap filteredgreen = GreenFilter(bitmap);
-            Bitmap filteredyellow = YellowFilter(bitmap);
-            Bitmap filteredorange = OrangeFilter(bitmap);
-            Bitmap filteredwhite = WhiteFilter(bitmap);
 
-            for (int i = 0; i <= 5; i++)
+
+            if (Sample.R < 60 && Sample.G < 60 && Sample.B > 10)
             {
-                if (i == 0)
-                {
-                    Color Sample = AreaPixelSample(SampleCenter, filteredblue);
-                    if (Sample.R > 20 && Sample.G > 20 && Sample.B > 20)
-                    {
-                        return Blue;
-                    }
-                }
-                else if (i == 1)
-                {
-                    Color Sample = AreaPixelSample(SampleCenter, filteredred);
-                    if (Sample.R > 20 && Sample.G > 20 && Sample.B > 20)
-                    {
-                        return Red;
-                    }
-                }
-                else if (i == 2)
-                {
-                    Color Sample = AreaPixelSample(SampleCenter, filteredgreen);
-                    if (Sample.R > 20 && Sample.G > 20 && Sample.B > 20)
-                    {
-                        return Green;
-                    }
-                }
-                else if (i == 3)
-                {
-                    Color Sample = AreaPixelSample(SampleCenter, filteredyellow);
-                    if (Sample.R > 20 && Sample.G > 20 && Sample.B > 20)
-                    {
-                        return Yellow;
-                    }
-                }
-                else if (i == 4)
-                {
-                    Color Sample = AreaPixelSample(SampleCenter, filteredorange);
-                    if (Sample.R > 20 && Sample.G > 20 && Sample.B > 20)
-                    {
-                        return Orange;
-                    }
-                }
-                else if (i == 5)
-                {
-                    Color Sample = AreaPixelSample(SampleCenter, filteredwhite);
-                    if (Sample.R > 20 && Sample.G > 20 && Sample.B > 20)
-                    {
-                        return White;
-                    }
-                }
+                return Blue;
             }
+            else if (Sample.R > 110 && Sample.G < 25 && Sample.B < 60)
+            {
+                return Red;                
+            }
+            else if (Sample.R < 40 && Sample.G > 60 && Sample.B < 60)
+            {
+                return Green;   
+            }
+            else if (Sample.R > 110 && Sample.G > 110 && Sample.B < 60)
+            {
+                return Yellow;
+            }
+            else if (Sample.R > 110 && Sample.G > 40 && Sample.G < 150 && Sample.B < 60)
+            {
+                return Orange;
+            }
+            else if (Sample.R > 190 && Sample.G > 190 && Sample.B > 190)
+            {
+                return White;
+            }
+            
             return Color.Gray;
         }
 

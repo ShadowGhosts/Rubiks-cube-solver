@@ -396,7 +396,7 @@ namespace Rubiks_cube_solver_app
 
             lock (this)
             {
-                Bitmap test = new Bitmap(@"C:\Users\cmart\source\repos\Raspberry win app\Raspberry win app\rubiks-cube.jpg");
+                Bitmap test = new Bitmap(@"C:\Users\cmart\source\repos\Rubiks cube solver\Rubiks cube solver\rubiks-cube.jpg");
                 Bitmap old = (Bitmap)pictureBoxCamera1.Image;
                 pictureBoxCamera1.Image = test;
 
@@ -420,11 +420,11 @@ namespace Rubiks_cube_solver_app
                 pictureBoxCamera2.Image = bitmap;
 
                 // create filter
-                GammaCorrection filter = new GammaCorrection(0.29999);
+                GammaCorrection filter = new GammaCorrection(0.3256894123);
                 BrightnessCorrection BCfilter = new BrightnessCorrection(-40);
                 // apply the filter
-                //filter.ApplyInPlace(bitmap);
-                BCfilter.ApplyInPlace(bitmap);
+                filter.ApplyInPlace(bitmap);
+                //BCfilter.ApplyInPlace(bitmap);
 
                 GetColorLayoutCamera2(bitmap);
 
@@ -480,7 +480,7 @@ namespace Rubiks_cube_solver_app
 
         private void GetColorLayoutCamera2(Bitmap test)
         {
-            RGBColorFilter colorFilter = new RGBColorFilter();
+            ColorDetection colorFilter = new ColorDetection();
 
             //display filtered color RIGHT side
             FaceR1.BackColor = colorFilter.ColorFilter(test, "fR1");
@@ -514,6 +514,12 @@ namespace Rubiks_cube_solver_app
             FaceB7.BackColor = colorFilter.ColorFilter(test, "fB7");
             FaceB8.BackColor = colorFilter.ColorFilter(test, "fB8");
             FaceB9.BackColor = colorFilter.ColorFilter(test, "fB9");
+
+            // color debuging 
+            label3.Text = colorFilter.ColorFilterString(test, "fB1");
+            label4.Text = colorFilter.ColorFilterString(test, "fB2");
+            label5.Text = colorFilter.ColorFilterString(test, "fB3");
+            label6.Text = colorFilter.ColorFilterString(test, "fB4");
 
         }
 
