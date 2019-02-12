@@ -160,6 +160,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorDetection.cs" />
     <Compile Include="ColorSelect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,6 +177,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Random Scrambler.cs" />
+    <Compile Include="RGBColorFilter.cs" />
+    <Compile Include="RGB_to_YUV.cs" />
     <EmbeddedResource Include="ColorSelect.resx">
       <DependentUpon>ColorSelect.cs</DependentUpon>
     </EmbeddedResource>
@@ -219,6 +222,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CamerOnePixelLocation.txt" />
     <Content Include="rubiks-cube.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

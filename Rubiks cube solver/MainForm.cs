@@ -18,11 +18,12 @@ using AForge.Video;
 using AForge.Video.DirectShow;
 using AForge.Imaging;
 using Image = System.Drawing.Image;
+using Point = System.Drawing.Point;
 using System.Drawing.Imaging;
 using AForge.Controls;
-
-
-
+using AForge.Imaging.Filters;
+using AForge;
+using AForge.Imaging.ColorReduction;
 
 namespace Rubiks_cube_solver_app
 {
@@ -399,7 +400,7 @@ namespace Rubiks_cube_solver_app
                 Bitmap old = (Bitmap)pictureBoxCamera1.Image;
                 pictureBoxCamera1.Image = test;
 
-                GetColorLayoutCamera1(test);
+                //GetColorLayoutCamera1(test);
 
 
                 if (old != null)
@@ -418,6 +419,13 @@ namespace Rubiks_cube_solver_app
                 Bitmap old = (Bitmap)pictureBoxCamera2.Image;
                 pictureBoxCamera2.Image = bitmap;
 
+                // create filter
+                GammaCorrection filter = new GammaCorrection(0.29999);
+                BrightnessCorrection BCfilter = new BrightnessCorrection(-40);
+                // apply the filter
+                //filter.ApplyInPlace(bitmap);
+                BCfilter.ApplyInPlace(bitmap);
+
                 GetColorLayoutCamera2(bitmap);
 
 
@@ -428,224 +436,87 @@ namespace Rubiks_cube_solver_app
             }
         }
 
-        private void GetColorLayoutCamera1(Bitmap test)
+
+
+        private void GetColorLayoutCamera1(Bitmap test, char FilterUsed)
         {
-            //Get color from pixel LEFT side
-            Color fL1 = test.GetPixel(80, 80);
-            Color fL2 = test.GetPixel(100, 100);
-            Color fL3 = test.GetPixel(130, 110);
-            Color fL4 = test.GetPixel(75, 110);
-           // Color fL5 = test.GetPixel(100, 130);
-            Color fL6 = test.GetPixel(125, 150);
-            Color fL7 = test.GetPixel(75, 150);
-            Color fL8 = test.GetPixel(100, 160);
-            Color fL9 = test.GetPixel(125, 180);
+            RGBColorFilter colorFilter = new RGBColorFilter();
 
             //display filtered color LEFT side
-            FaceL1.BackColor = ColorFilter(fL1);
-            FaceL2.BackColor = ColorFilter(fL2);
-            FaceL3.BackColor = ColorFilter(fL3);
-            FaceL4.BackColor = ColorFilter(fL4);
-          //  FaceL5.BackColor = Color.Green;
-            FaceL6.BackColor = ColorFilter(fL6);
-            FaceL7.BackColor = ColorFilter(fL7);
-            FaceL8.BackColor = ColorFilter(fL8);
-            FaceL9.BackColor = ColorFilter(fL9);
-
-            //Get color from pixel UP side
-            Color fU1 = test.GetPixel(90, 60);
-            Color fU2 = test.GetPixel(110, 45);
-            Color fU3 = test.GetPixel(130, 30);
-            Color fU4 = test.GetPixel(110, 70);
-           // Color fU5 = test.GetPixel(140, 60);
-            Color fU6 = test.GetPixel(160, 40);
-            Color fU7 = test.GetPixel(140, 90);
-            Color fU8 = test.GetPixel(160, 70);
-            Color fU9 = test.GetPixel(190, 60);
+            FaceL1.BackColor = colorFilter.ColorFilter(test, "fL1");
+            FaceL2.BackColor = colorFilter.ColorFilter(test, "fL2");
+            FaceL3.BackColor = colorFilter.ColorFilter(test, "fL3");
+            FaceL4.BackColor = colorFilter.ColorFilter(test, "fL4");
+            //  FaceL5.BackColor = Color.Green;
+            FaceL6.BackColor = colorFilter.ColorFilter(test, "fL6");
+            FaceL7.BackColor = colorFilter.ColorFilter(test, "fL7");
+            FaceL8.BackColor = colorFilter.ColorFilter(test, "fL8");
+            FaceL9.BackColor = colorFilter.ColorFilter(test, "fL9");
 
             //display filtered color UP side
-            FaceU1.BackColor = ColorFilter(fU1);
-            FaceU2.BackColor = ColorFilter(fU2);
-            FaceU3.BackColor = ColorFilter(fU3);
-            FaceU4.BackColor = ColorFilter(fU4);
+            FaceU1.BackColor = colorFilter.ColorFilter(test, "fU1");
+            FaceU2.BackColor = colorFilter.ColorFilter(test, "fU2");
+            FaceU3.BackColor = colorFilter.ColorFilter(test, "fU3");
+            FaceU4.BackColor = colorFilter.ColorFilter(test, "fU4");
             //FaceU5.BackColor = Color.White;
-            FaceU6.BackColor = ColorFilter(fU6);
-            FaceU7.BackColor = ColorFilter(fU7);
-            FaceU8.BackColor = ColorFilter(fU8);
-            FaceU9.BackColor = ColorFilter(fU9);
-
-            //Get color from pixel FRONT side
-            Color fF1 = test.GetPixel(160, 100);
-            Color fF2 = test.GetPixel(180, 100);
-            Color fF3 = test.GetPixel(200, 80);
-            Color fF4 = test.GetPixel(150, 150);
-            //Color fF5 = test.GetPixel(180, 130);
-            Color fF6 = test.GetPixel(200, 120);
-            Color fF7 = test.GetPixel(150, 180);
-            Color fF8 = test.GetPixel(180, 160);
-            Color fF9 = test.GetPixel(200, 150);
+            FaceU6.BackColor = colorFilter.ColorFilter(test, "fU6");
+            FaceU7.BackColor = colorFilter.ColorFilter(test, "fU7");
+            FaceU8.BackColor = colorFilter.ColorFilter(test, "fU8");
+            FaceU9.BackColor = colorFilter.ColorFilter(test, "fU9");
 
             //display filtered color blue side
-            FaceF1.BackColor = ColorFilter(fF1);
-            FaceF2.BackColor = ColorFilter(fF2);
-            FaceF3.BackColor = ColorFilter(fF3);
-            FaceF4.BackColor = ColorFilter(fF4);
+            FaceF1.BackColor = colorFilter.ColorFilter(test, "fF1");
+            FaceF2.BackColor = colorFilter.ColorFilter(test, "fF2");
+            FaceF3.BackColor = colorFilter.ColorFilter(test, "fF3");
+            FaceF4.BackColor = colorFilter.ColorFilter(test, "fF4");
             //FaceF5.BackColor = Color.Red;
-            FaceF6.BackColor = ColorFilter(fF6);
-            FaceF7.BackColor = ColorFilter(fF7);
-            FaceF8.BackColor = ColorFilter(fF8);
-            FaceF9.BackColor = ColorFilter(fF9);
+            FaceF6.BackColor = colorFilter.ColorFilter(test, "fF6");
+            FaceF7.BackColor = colorFilter.ColorFilter(test, "fF7");
+            FaceF8.BackColor = colorFilter.ColorFilter(test, "fF8");
+            FaceF9.BackColor = colorFilter.ColorFilter(test, "fF9");
 
-
-            //debug color filter
-            label4.Text = fU1.ToString();
-            label3.Text = fU2.ToString();
-            label5.Text = fU8.ToString();
-           // label6.Text = fU9.ToString();
+            
         }
 
         private void GetColorLayoutCamera2(Bitmap test)
         {
-            //Get color from pixel RIGHT side
-            Color fR1 = AreaPixelSample(283, 246, test);
-            Color fR2 = AreaPixelSample(351, 204, test);
-            Color fR3 = AreaPixelSample(416, 166, test);
-            Color fR4 = AreaPixelSample(286, 319, test);
-           // Color fR5 = AreaPixelSample(356, 278, test);
-            Color fR6 = AreaPixelSample(415, 238, test);
-            Color fR7 = AreaPixelSample(290, 385, test);
-            Color fR8 = AreaPixelSample(345, 338, test);
-            Color fR9 = AreaPixelSample(413, 292, test);
+            RGBColorFilter colorFilter = new RGBColorFilter();
 
             //display filtered color RIGHT side
-            FaceR1.BackColor = ColorFilter(fR1);
-            FaceR2.BackColor = ColorFilter(fR2);
-            FaceR3.BackColor = ColorFilter(fR3);
-            FaceR4.BackColor = ColorFilter(fR4);
+            FaceR1.BackColor = colorFilter.ColorFilter(test, "fR1");
+            FaceR2.BackColor = colorFilter.ColorFilter(test, "fR2");
+            FaceR3.BackColor = colorFilter.ColorFilter(test, "fR3");
+            FaceR4.BackColor = colorFilter.ColorFilter(test, "fR4");
             //FaceR5.BackColor = Color.Blue;
-            FaceR6.BackColor = ColorFilter(fR6);
-            FaceR7.BackColor = ColorFilter(fR7);
-            FaceR8.BackColor = ColorFilter(fR8);
-            FaceR9.BackColor = ColorFilter(fR9);
-
-            //Get color from pixel DOWN side
-            Color fD1 = AreaPixelSample(270, 70, test);
-            Color fD2 = AreaPixelSample(322, 89, test);
-            Color fD3 = AreaPixelSample(378, 115,test);
-            Color fD4 = AreaPixelSample(210, 93, test);
-           // Color fD5 = AreaPixelSample(258, 119, test);
-            Color fD6 = AreaPixelSample(319, 147, test);
-            Color fD7 = AreaPixelSample(145, 124, test);
-            Color fD8 = AreaPixelSample(195, 148, test);
-            Color fD9 = AreaPixelSample(247, 185, test);
+            FaceR6.BackColor = colorFilter.ColorFilter(test, "fR6");
+            FaceR7.BackColor = colorFilter.ColorFilter(test, "fR7");
+            FaceR8.BackColor = colorFilter.ColorFilter(test, "fR8");
+            FaceR9.BackColor = colorFilter.ColorFilter(test, "fR9");
 
             //display filtered color DOWN side
-            FaceD1.BackColor = ColorFilter(fD1);
-            FaceD2.BackColor = ColorFilter(fD2);
-            FaceD3.BackColor = ColorFilter(fD3);
-            FaceD4.BackColor = ColorFilter(fD4);
+            FaceD1.BackColor = colorFilter.ColorFilter(test, "fD1");
+            FaceD2.BackColor = colorFilter.ColorFilter(test, "fD2");
+            FaceD3.BackColor = colorFilter.ColorFilter(test, "fD3");
+            FaceD4.BackColor = colorFilter.ColorFilter(test, "fD4");
             //FaceD5.BackColor = Color.Yellow;
-            FaceD6.BackColor = ColorFilter(fD6);
-            FaceD7.BackColor = ColorFilter(fD7);
-            FaceD8.BackColor = ColorFilter(fD8);
-            FaceD9.BackColor = ColorFilter(fD9);
-
-            //Get color from pixel BACK side
-            Color fB1 = AreaPixelSample(115, 168, test);
-            Color fB2 = AreaPixelSample(162, 200, test);
-            Color fB3 = AreaPixelSample(217, 235, test);
-            Color fB4 = AreaPixelSample(126, 238, test);
-           // Color fB5 = AreaPixelSample(175, 265, test);
-            Color fB6 = AreaPixelSample(228, 308, test);
-            Color fB7 = AreaPixelSample(140, 295, test);
-            Color fB8 = AreaPixelSample(182, 325, test);
-            Color fB9 = AreaPixelSample(232, 369, test);
+            FaceD6.BackColor = colorFilter.ColorFilter(test, "fD6");
+            FaceD7.BackColor = colorFilter.ColorFilter(test, "fD7");
+            FaceD8.BackColor = colorFilter.ColorFilter(test, "fD8");
+            FaceD9.BackColor = colorFilter.ColorFilter(test, "fD9");
 
             //display filtered color BACK side
-            FaceB1.BackColor = ColorFilter(fB1);
-            FaceB2.BackColor = ColorFilter(fB2);
-            FaceB3.BackColor = ColorFilter(fB3);
-            FaceB4.BackColor = ColorFilter(fB4);
+            FaceB1.BackColor = colorFilter.ColorFilter(test, "fB1");
+            FaceB2.BackColor = colorFilter.ColorFilter(test, "fB2");
+            FaceB3.BackColor = colorFilter.ColorFilter(test, "fB3");
+            FaceB4.BackColor = colorFilter.ColorFilter(test, "fB4");
             //FaceB5.BackColor = Color.Orange;
-            FaceB6.BackColor = ColorFilter(fB6);
-            FaceB7.BackColor = ColorFilter(fB7);
-            FaceB8.BackColor = ColorFilter(fB8);
-            FaceB9.BackColor = ColorFilter(fB9);
+            FaceB6.BackColor = colorFilter.ColorFilter(test, "fB6");
+            FaceB7.BackColor = colorFilter.ColorFilter(test, "fB7");
+            FaceB8.BackColor = colorFilter.ColorFilter(test, "fB8");
+            FaceB9.BackColor = colorFilter.ColorFilter(test, "fB9");
 
-
-            //debug color filter
-            
-            label4.Text = fD9.ToString();
-            label3.Text = fD8.ToString();
-            label5.Text = fB4.ToString();
-            //label6.Text = fR4.ToString();
-            
         }
 
-
-        private Color AreaPixelSample(int x, int y, Bitmap test)
-        {
-            x = x - 5;
-            y = y - 5;
-            int resultB = 0;
-            int resultR = 0;
-            int resultG = 0;
-            int total = 0;
-
-            for (int i =0; i < 10; i++)
-            {
-                for(int j = 0; j < 10; j++)
-                {
-                    Color area = test.GetPixel(x, y);
-                    resultB = resultB + area.B;
-                    resultG = resultG + area.G;
-                    resultR = resultR + area.R;
-                    x++;
-                    total++;
-                }
-                x = x - 10;
-                y++;
-            }
-
-            resultB = resultB / total;
-            resultG = resultG / total;
-            resultR = resultR / total;
-
-
-            return Color.FromArgb(resultR,resultG,resultB);
-        }
-
-        private Color ColorFilter(Color color)
-        {
-
-            Color Blue = Color.Blue;
-            Color Orange = Color.Orange;
-            Color Red = Color.Red;
-            Color White = Color.White;
-            Color Green = Color.Green;
-            Color Yellow = Color.Yellow;
-
-            if(color.G <= 40)
-            {
-                if ((color.B - color.R) <= 45 && (color.B - color.R) >= -45)
-                    return Blue;
-            }
-            if (color.B <= 30)
-            {
-                if ((color.R - color.G) <= 30)
-                    return Yellow;
-                if ((color.R - color.G) >= 100 && (color.R - color.G) <= 145)
-                    return Orange;
-            }
-            if (color.B <= 50 && color.R >= 160 && color.G <= 50)
-                return Red;
-            if (color.R <= 30 && ((color.G - color.B >= 25) && (color.G - color.B <= 75)))
-                return Green;
-            if ((color.B + color.R + color.B) / 3 <= 255 && (color.B + color.R + color.B) / 3 >= 175)
-                return White;
-            else
-                return color;
-        }
 
         private Rectangle[] GenerateCallibrBox(int width, int hight)
         {
@@ -677,6 +548,8 @@ namespace Rubiks_cube_solver_app
             g1.DrawLine(Black, 271, 41, 443, 117);
             g1.DrawLine(Black, 440, 308, 443, 117);
             g1.DrawLine(Black, 440, 308, 271, 420);
+
+
         }
 
         private void VideoSourceCamera2_NewFrame(object sender, ref Bitmap image)
@@ -695,6 +568,11 @@ namespace Rubiks_cube_solver_app
             g1.DrawLine(Black, 440, 308, 443, 117);
             g1.DrawLine(Black, 440, 308, 271, 420);
 
+            BrightnessCorrection BCfilter = new BrightnessCorrection(-40);
+            GammaCorrection filter = new GammaCorrection(0.23999);
+            // apply the filter
+            //filter.ApplyInPlace(image);
+            BCfilter.ApplyInPlace(image);
         }
 
 
@@ -1504,6 +1382,7 @@ namespace Rubiks_cube_solver_app
                 ServerMessage = null;
 
                 count_message_array = 0;
+                scramble = false;
                 Arduino_Com(count_message_array);
 
             }
@@ -1522,6 +1401,7 @@ namespace Rubiks_cube_solver_app
         private int Array_size = 0;
         private int count_message_array = 0;
         private string messageSend = "";
+        private bool scramble;
 
         private void Arduino_Com(int count)
         {
@@ -1531,12 +1411,17 @@ namespace Rubiks_cube_solver_app
                     
                     
 
-                if (Array_size != 0 && count < Array_size)
+                if (Array_size != 0 && count < Array_size && scramble == false)
                 {
                     ArduinoSerial.Write(ConvertedMessage[count]);
                     messageSend = ConvertedMessage[count];
                 }
 
+                if(scramble == true && count < 30)
+                {
+                    ArduinoSerial.Write(ConvertedMessage[count]);
+                    messageSend = ConvertedMessage[count];
+                }
              
             }
             else
@@ -1590,6 +1475,14 @@ namespace Rubiks_cube_solver_app
                     //MessageBox.Show("Confirm message recived.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 if(count_message_array == Array_size)
+                {
+                    //Sending turn sequance finished
+                    count_message_array = 0;
+                    Array_size = 0;
+                    //MessageBox.Show("Message string send finished", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ArduinoSerial.Write(MESSAGE_TIMER_STOP);
+                }
+                if(count_message_array == 30 && scramble == true)
                 {
                     //Sending turn sequance finished
                     count_message_array = 0;
@@ -1877,6 +1770,7 @@ namespace Rubiks_cube_solver_app
             TurnSequence = ScrambleCube;
 
             count_message_array = 0;
+            scramble = true;
             Arduino_Com(count_message_array);
 
         }
@@ -1887,7 +1781,7 @@ namespace Rubiks_cube_solver_app
             //label3.Text +=  "! ";
         }
 
-
+       
 
     }
 }

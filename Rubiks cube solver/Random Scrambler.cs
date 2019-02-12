@@ -13,7 +13,7 @@ namespace Rubiks_cube_solver_app
         public string Return_Combo()
         {
             Random random = new Random();
-            string return_value = "";
+            string return_value = null;
             for (int i = 0; i <= 30; i++)
             {
          
