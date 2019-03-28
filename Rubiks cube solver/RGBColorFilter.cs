@@ -19,11 +19,11 @@ namespace Rubiks_cube_solver_app
             UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
             
             // create color filter
-            ColorFiltering RedFilter = new ColorFiltering();
+            HSLFiltering RedFilter = new HSLFiltering();
             // configure the filter to keep red object only
-            RedFilter.Red = new IntRange(110, 255);
-            RedFilter.Green = new IntRange(0, 60);
-            RedFilter.Blue = new IntRange(0, 60);
+            RedFilter.Hue = new IntRange(336, 15);
+            RedFilter.Saturation = new Range(0.6f, 1);
+            RedFilter.Luminance = new Range(0.1f, 1);
             // filter image
             RedFilter.ApplyInPlace(unmanagedImage);
             Bitmap managedImage = unmanagedImage.ToManagedImage();
@@ -37,11 +37,19 @@ namespace Rubiks_cube_solver_app
             //GammaCorrection filter = new GammaCorrection(0.29999);
             //filter.ApplyInPlace(unmanagedImage);
             // create color filter
+
             ColorFiltering BlueFilter = new ColorFiltering();
             // configure the filter to keep red object only
             BlueFilter.Red = new IntRange(0, 60);
             BlueFilter.Green = new IntRange(0, 60);
             BlueFilter.Blue = new IntRange(110, 255);
+
+            /*HSLFiltering BlueFilter = new HSLFiltering();
+            // configure the filter to keep red object only
+            BlueFilter.Hue = new IntRange(185, 275);
+            BlueFilter.Saturation = new Range(0.6f, 1);
+            BlueFilter.Luminance = new Range(0.1f, 1);*/
+            
             // filter image
             BlueFilter.ApplyInPlace(unmanagedImage);
             Bitmap managedImage = unmanagedImage.ToManagedImage();
@@ -53,11 +61,11 @@ namespace Rubiks_cube_solver_app
         {
             UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
             // create color filter
-            ColorFiltering GreenFilter = new ColorFiltering();
+            HSLFiltering GreenFilter = new HSLFiltering();
             // configure the filter to keep red object only
-            GreenFilter.Red = new IntRange(0, 60);
-            GreenFilter.Green = new IntRange(110, 255); ;
-            GreenFilter.Blue = new IntRange(0, 60);
+            GreenFilter.Hue = new IntRange(65, 155);
+            GreenFilter.Saturation = new Range(0.6f, 1); ;
+            GreenFilter.Luminance = new Range(0.1f, 1);
             // filter image
             GreenFilter.ApplyInPlace(unmanagedImage);
 
@@ -70,13 +78,13 @@ namespace Rubiks_cube_solver_app
         {
             UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
             GammaCorrection filter = new GammaCorrection(0.29999);
-            filter.ApplyInPlace(unmanagedImage);
+            //filter.ApplyInPlace(unmanagedImage);
             // create color filter
-            ColorFiltering YellowFilter = new ColorFiltering();
+            HSLFiltering YellowFilter = new HSLFiltering();
             // configure the filter to keep red object only
-            YellowFilter.Red = new IntRange(100, 255);
-            YellowFilter.Green = new IntRange(100, 255);
-            YellowFilter.Blue = new IntRange(0, 75);
+            YellowFilter.Hue = new IntRange(40, 65);
+            YellowFilter.Saturation = new Range(0.6f, 1);
+            YellowFilter.Luminance = new Range(0.1f, 1);
             // filter image
             YellowFilter.ApplyInPlace(unmanagedImage);
             //YellowFilter.ApplyInPlace(bitmap);
@@ -92,11 +100,11 @@ namespace Rubiks_cube_solver_app
             GammaCorrection filter = new GammaCorrection(0.39999);
             //filter.ApplyInPlace(unmanagedImage);
             // create color filter
-            ColorFiltering OrangeFilter = new ColorFiltering();
+            HSLFiltering OrangeFilter = new HSLFiltering();
             // configure the filter to keep red object only
-            OrangeFilter.Red = new IntRange(110, 255);
-            OrangeFilter.Green = new IntRange(60, 150);
-            OrangeFilter.Blue = new IntRange(0, 60);
+            OrangeFilter.Hue = new IntRange(15, 40);
+            OrangeFilter.Saturation = new Range(0.6f, 1);
+            OrangeFilter.Luminance = new Range(0.1f, 1);
             // filter image
             OrangeFilter.ApplyInPlace(unmanagedImage);
 
@@ -109,7 +117,7 @@ namespace Rubiks_cube_solver_app
         {
             UnmanagedImage unmanagedImage = UnmanagedImage.FromManagedImage(bitmap);
             GammaCorrection filter = new GammaCorrection(0.19999);
-            filter.ApplyInPlace(unmanagedImage);
+            //filter.ApplyInPlace(unmanagedImage);
             // create color filter
             ColorFiltering WhiteFilter = new ColorFiltering();
             // configure the filter to keep red object only
@@ -125,15 +133,15 @@ namespace Rubiks_cube_solver_app
 
         public Color ColorFilter(Bitmap bitmap, string Face)
         {
-            
-            
 
-            Point[] FR = new Point[] { new Point(283, 246), new Point(351, 204), new Point(416, 166), new Point(286, 319), new Point(356, 278), new Point(415, 238), new Point(290, 385), new Point(345, 338), new Point(413, 292) };
-            Point[] FD = new Point[] { new Point(270, 70), new Point(322, 89), new Point(378, 115), new Point(210, 93), new Point(258, 119), new Point(319, 147), new Point(145, 124), new Point(195, 148), new Point(247, 185) };
-            Point[] FB = new Point[] { new Point(115, 168), new Point(162, 200), new Point(217, 235), new Point(126, 238), new Point(175, 265), new Point(228, 308), new Point(140, 295), new Point(182, 325), new Point(232, 369) };
-            Point[] FL = new Point[] { new Point(283, 246), new Point(351, 204), new Point(416, 166), new Point(286, 319), new Point(356, 278), new Point(415, 238), new Point(290, 385), new Point(345, 338), new Point(413, 292) };
-            Point[] FU = new Point[] { new Point(270, 70), new Point(322, 89), new Point(378, 115), new Point(210, 93), new Point(258, 119), new Point(319, 147), new Point(145, 124), new Point(195, 148), new Point(247, 185) };
-            Point[] FF = new Point[] { new Point(115, 168), new Point(162, 200), new Point(217, 235), new Point(126, 238), new Point(175, 265), new Point(228, 308), new Point(140, 295), new Point(182, 325), new Point(232, 369) };
+
+
+            Point[] FR = new Point[] { new Point(107, 157), new Point(177, 87), new Point(246, 32), new Point(107, 214), new Point(413, 292), new Point(246, 106), new Point(89, 301), new Point(156, 254), new Point(235, 194) };
+            Point[] FD = new Point[] { new Point(323, 442), new Point(225, 409), new Point(144, 370), new Point(375, 405), new Point(258, 119), new Point(202, 326), new Point(453, 374), new Point(367, 332), new Point(284, 275) };
+            Point[] FB = new Point[] { new Point(349, 36), new Point(412, 96), new Point(489, 166), new Point(337, 108), new Point(175, 265), new Point(484, 218), new Point(324, 197), new Point(410, 257), new Point(491, 294) };
+            Point[] FL = new Point[] { new Point(103, 177), new Point(172, 221), new Point(245, 278), new Point(121, 252), new Point(356, 278), new Point(248, 361), new Point(128, 300), new Point(187, 363), new Point(243, 419) };
+            Point[] FU = new Point[] { new Point(143, 110), new Point(221, 68), new Point(268, 32), new Point(213, 154), new Point(258, 119), new Point(369, 64), new Point(287, 208), new Point(377, 151), new Point(450, 107) };
+            Point[] FF = new Point[] { new Point(337, 288), new Point(421, 224), new Point(486, 173), new Point(331, 360), new Point(175, 265), new Point(472, 253), new Point(323, 426), new Point(399, 374), new Point(476, 310) };
 
             switch (Face)
             {

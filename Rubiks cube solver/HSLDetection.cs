@@ -12,22 +12,20 @@ using Point = System.Drawing.Point;
 
 namespace Rubiks_cube_solver_app
 {
-    class ColorDetection
+    class HSLDetection
     {
-        public Point[] FR = new Point[] { new Point(71, 138), new Point(137, 65), new Point(200, 19), new Point(64, 192), new Point(127, 138), new Point(195, 90), new Point(53, 272), new Point(111, 227), new Point(196, 183) };
-        public Point[] FB = new Point[] { new Point(295, 7), new Point(365, 52), new Point(419, 82), new Point(282, 68), new Point(372, 123), new Point(435, 169), new Point(293, 170), new Point(378, 219), new Point(447, 266) };
-        public Point[] FD = new Point[] { new Point(281, 414), new Point(171, 382), new Point(85, 342), new Point(316, 381), new Point(237, 343), new Point(148, 298), new Point(402, 346), new Point(327, 305), new Point(239, 260) };
-        public Point[] FL = new Point[] { new Point(90,148), new Point(155,208), new Point(235,262), new Point(105,242), new Point(166,298), new Point(240,352), new Point(129,319), new Point(177,369), new Point(243,418) };
-        public Point[] FU = new Point[] { new Point(131,92), new Point(210,53), new Point(321,25), new Point(182,142), new Point(281,97), new Point(355,57), new Point(268,185), new Point(358,139), new Point(443,101) };
-        public Point[] FF = new Point[] { new Point(334,276), new Point(414,219), new Point(491,172), new Point(319,365), new Point(407,308), new Point(486,243), new Point(325,434), new Point(396,381), new Point(471,308) };
-        public Point[] calibrationPoits = new Point[] { new Point(163, 437), new Point(209, 446), new Point(428, 420), new Point(470, 447), new Point(397, 452) };
-
         public Color ColorFilter(Bitmap bitmap, string Face)
         {
 
 
 
-           
+            Point[] FR = new Point[] { new Point(124, 158), new Point(194, 92), new Point(266, 34), new Point(122, 217), new Point(413, 292), new Point(253, 114), new Point(105, 299), new Point(165, 260), new Point(237, 199) };
+            Point[] FD = new Point[] { new Point(323, 442), new Point(225, 409), new Point(144, 370), new Point(375, 405), new Point(258, 119), new Point(202, 326), new Point(453, 374), new Point(367, 332), new Point(284, 275) };
+            Point[] FB = new Point[] { new Point(349, 36), new Point(412, 96), new Point(489, 166), new Point(337, 108), new Point(175, 265), new Point(484, 218), new Point(324, 197), new Point(410, 257), new Point(491, 294) };
+            Point[] FL = new Point[] { new Point(103, 177), new Point(172, 221), new Point(245, 278), new Point(121, 252), new Point(356, 278), new Point(248, 361), new Point(128, 300), new Point(187, 363), new Point(243, 419) };
+            Point[] FU = new Point[] { new Point(143, 110), new Point(221, 68), new Point(268, 32), new Point(213, 154), new Point(258, 119), new Point(369, 64), new Point(287, 208), new Point(377, 151), new Point(450, 107) };
+            Point[] FF = new Point[] { new Point(337, 288), new Point(421, 224), new Point(486, 173), new Point(331, 360), new Point(175, 265), new Point(472, 253), new Point(323, 426), new Point(399, 374), new Point(476, 310) };
+
 
             switch (Face)
             {
@@ -207,7 +205,7 @@ namespace Rubiks_cube_solver_app
 
 
 
-            Point[] FR = new Point[] { new Point(107, 157), new Point(177, 87), new Point(246, 32), new Point(107, 214), new Point(413, 292), new Point(246, 106), new Point(89, 301), new Point(156, 254), new Point(235, 194) };
+            Point[] FR = new Point[] { new Point(124, 158), new Point(194, 92), new Point(266, 34), new Point(122, 217), new Point(413, 292), new Point(253, 114), new Point(105, 299), new Point(165, 260), new Point(237, 199) };
             Point[] FD = new Point[] { new Point(323, 442), new Point(225, 409), new Point(144, 370), new Point(375, 405), new Point(258, 119), new Point(202, 326), new Point(453, 374), new Point(367, 332), new Point(284, 275) };
             Point[] FB = new Point[] { new Point(349, 36), new Point(412, 96), new Point(489, 166), new Point(337, 108), new Point(175, 265), new Point(484, 218), new Point(324, 197), new Point(410, 257), new Point(491, 294) };
             Point[] FL = new Point[] { new Point(103, 177), new Point(172, 221), new Point(245, 278), new Point(121, 252), new Point(356, 278), new Point(248, 361), new Point(128, 300), new Point(187, 363), new Point(243, 419) };
@@ -454,61 +452,49 @@ namespace Rubiks_cube_solver_app
             Color Yellow = Color.Yellow;
 
             Color Sample = AreaPixelSample(SampleCenter, bitmap);
+            
 
 
-
-            if (Sample.R < 95 && Sample.G > 70 && Sample.B < 100  || Sample.R < 75 && Sample.G > 200 && Sample.B > 100 && Sample.B < 155) 
+            if (Sample.GetHue() > 200 && Sample.GetHue() < 274 && Sample.GetSaturation() > 10 && Sample.GetSaturation() < 80)
+            {
+                return Blue;
+            }
+            else if (Sample.GetHue() > 330 && Sample.GetHue() < 10 && Sample.GetSaturation() > 10 && Sample.GetSaturation() < 80)
+            {
+                return Red;
+            }
+            else if (Sample.GetHue() > 70 && Sample.GetHue() < 140 && Sample.GetSaturation() > 10 && Sample.GetSaturation() < 80)
             {
                 return Green;
             }
-            else if (Sample.R > 110 && Sample.G < 60 && Sample.B < 75 || Sample.R > 200 && Sample.G < 95 && Sample.G > 45 && Sample.B > 70 && Sample.B < 115)
-            {
-                return Red;                
-            }
-            else if (Sample.R < 110 && Sample.G < 110 && Sample.B > 0)
-            {
-                return Blue;   
-            }
-            else if (Sample.R > 180 && Sample.G > 220 && Sample.B < 150 && Sample.B > 60)
+            else if (Sample.GetHue() > 40 && Sample.GetHue() < 70 && Sample.GetSaturation() > 10 && Sample.GetSaturation() < 80)
             {
                 return Yellow;
             }
-            else if (Sample.R > 100 && Sample.G > 110 && Sample.B <= 75)
-            {
-                return Yellow;
-            }
-            else if (Sample.R > 150 && Sample.R < 210 && Sample.G > 190 && Sample.G < 240 && Sample.B < 150 && Sample.B > 60)
-            {
-                return Yellow;
-            }
-            else if (Sample.R > 170 && Sample.G > 235 && Sample.B < 80)
-            {
-                return Yellow;
-            }
-            else if (Sample.R > 110 && Sample.G > 40 && Sample.G < 190 && Sample.B < 140)
+            else if (Sample.GetHue() > 10 && Sample.GetHue() < 40 && Sample.GetSaturation() > 10 && Sample.GetSaturation() < 80)
             {
                 return Orange;
             }
-            else if(Sample.R > 200 && Sample.R < 230 && Sample.G > 100 && Sample.G < 250 && Sample.B > 60 && Sample.B < 175)
+            else if (Sample.GetSaturation() > 80 )
             {
-                return Orange;
+                return White;
             }
-           
-            
-            return Color.White;
+
+            return Color.Gray;
         }
 
-        public Color AreaPixelSample(System.Drawing.Point CenterOfSample, Bitmap test)
+        private Color AreaPixelSample(System.Drawing.Point CenterOfSample, Bitmap test)
         {
-            
+            CenterOfSample.X = CenterOfSample.X - 5;
+            CenterOfSample.Y = CenterOfSample.Y - 5;
             int resultB = 0;
             int resultR = 0;
             int resultG = 0;
             int total = 0;
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 10; i++)
             {
-                for (int j = 0; j < 15; j++)
+                for (int j = 0; j < 10; j++)
                 {
                     Color area = test.GetPixel(CenterOfSample.X, CenterOfSample.Y);
                     resultB = resultB + area.B;
@@ -517,7 +503,7 @@ namespace Rubiks_cube_solver_app
                     CenterOfSample.X++;
                     total++;
                 }
-                CenterOfSample.X = CenterOfSample.X - 15;
+                CenterOfSample.X = CenterOfSample.X - 10;
                 CenterOfSample.Y++;
             }
 
@@ -528,7 +514,6 @@ namespace Rubiks_cube_solver_app
 
             return Color.FromArgb(resultR, resultG, resultB);
         }
-
 
 
 

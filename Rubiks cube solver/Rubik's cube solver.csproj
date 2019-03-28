@@ -161,12 +161,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorDetection.cs" />
+    <Compile Include="ColorDetectionC2.cs" />
     <Compile Include="ColorSelect.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ColorSelect.Designer.cs">
       <DependentUpon>ColorSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="HSLDetection.cs" />
     <Compile Include="HttpClient.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -222,7 +224,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CamerOnePixelLocation.txt" />
+    <Content Include="CamerPixelLocation.txt" />
     <Content Include="rubiks-cube.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

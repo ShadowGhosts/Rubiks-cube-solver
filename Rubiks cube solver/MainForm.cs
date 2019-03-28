@@ -122,7 +122,7 @@ namespace Rubiks_cube_solver_app
             PortSelect.Enabled = enable;
             ConnectPort.Enabled = enable;
             SolveButton.Enabled = !enable;
-            Scramble.Enabled = !enable;
+            Scramblebutton.Enabled = !enable;
             DisconnectPort.Enabled = !enable;
         }
 
@@ -396,11 +396,18 @@ namespace Rubiks_cube_solver_app
 
             lock (this)
             {
-                Bitmap test = new Bitmap(@"C:\Users\cmart\source\repos\Rubiks cube solver\Rubiks cube solver\rubiks-cube.jpg");
+                //Bitmap test = new Bitmap(@"C:\Users\cmart\source\repos\Rubiks cube solver\Rubiks cube solver\rubiks-cube.jpg");
                 Bitmap old = (Bitmap)pictureBoxCamera1.Image;
-                pictureBoxCamera1.Image = test;
+                pictureBoxCamera1.Image = bitmap;
 
-                //GetColorLayoutCamera1(test);
+                // create filter
+                GammaCorrection filter = new GammaCorrection(0.4125468);
+                BrightnessCorrection BCfilter = new BrightnessCorrection(5);
+                // apply the filter
+                filter.ApplyInPlace(bitmap);
+                BCfilter.ApplyInPlace(bitmap);
+
+                GetColorLayoutCamera1(bitmap);
 
 
                 if (old != null)
@@ -420,11 +427,11 @@ namespace Rubiks_cube_solver_app
                 pictureBoxCamera2.Image = bitmap;
 
                 // create filter
-                GammaCorrection filter = new GammaCorrection(0.3256894123);
-                BrightnessCorrection BCfilter = new BrightnessCorrection(-40);
+                GammaCorrection filter = new GammaCorrection(0.4125468);
+                BrightnessCorrection BCfilter = new BrightnessCorrection(5);
                 // apply the filter
                 filter.ApplyInPlace(bitmap);
-                //BCfilter.ApplyInPlace(bitmap);
+                BCfilter.ApplyInPlace(bitmap);
 
                 GetColorLayoutCamera2(bitmap);
 
@@ -438,9 +445,11 @@ namespace Rubiks_cube_solver_app
 
 
 
-        private void GetColorLayoutCamera1(Bitmap test, char FilterUsed)
+        private void GetColorLayoutCamera1(Bitmap test)
         {
-            RGBColorFilter colorFilter = new RGBColorFilter();
+            ColorDetection colorFilter = new ColorDetection();
+            //RGBColorFilter colorFilter = new RGBColorFilter();
+            //HSLDetection colorFilter = new HSLDetection();
 
             //display filtered color LEFT side
             FaceL1.BackColor = colorFilter.ColorFilter(test, "fL1");
@@ -475,12 +484,54 @@ namespace Rubiks_cube_solver_app
             FaceF8.BackColor = colorFilter.ColorFilter(test, "fF8");
             FaceF9.BackColor = colorFilter.ColorFilter(test, "fF9");
 
-            
+            // color debuging 
+            textBox1.AppendText("Face L\n");
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fL1"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fL2"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fL3"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fL4"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fL6"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fL7"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fL8"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fL9"));
+
+            textBox1.AppendText("Face F\n");
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fF1"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fF2"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fF3"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fF4"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fF6"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fF7"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fF8"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fF9"));
+
+            textBox1.AppendText("Face U\n");
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fU1"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fU2"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fU3"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fU4"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fU6"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fU7"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fU8"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fU9"));
+            textBox1.AppendText("Blue\n");
+            textBox1.AppendText(colorFilter.AreaPixelSample(colorFilter.calibrationPoits[0], test).ToString());
+            textBox1.AppendText("Yellow\n");
+            textBox1.AppendText(colorFilter.AreaPixelSample(colorFilter.calibrationPoits[1], test).ToString());
+            textBox1.AppendText("Green\n");
+            textBox1.AppendText(colorFilter.AreaPixelSample(colorFilter.calibrationPoits[2], test).ToString());
+            textBox1.AppendText("Orange\n");
+            textBox1.AppendText(colorFilter.AreaPixelSample(colorFilter.calibrationPoits[3], test).ToString());
+            textBox1.AppendText("Red\n");
+            textBox1.AppendText(colorFilter.AreaPixelSample(colorFilter.calibrationPoits[4], test).ToString());
+
         }
 
         private void GetColorLayoutCamera2(Bitmap test)
         {
-            ColorDetection colorFilter = new ColorDetection();
+            ColorDetectionC2 colorFilter = new ColorDetectionC2();
+            //RGBColorFilter colorFilter = new RGBColorFilter();
+            //HSLDetection colorFilter = new HSLDetection();
 
             //display filtered color RIGHT side
             FaceR1.BackColor = colorFilter.ColorFilter(test, "fR1");
@@ -516,69 +567,194 @@ namespace Rubiks_cube_solver_app
             FaceB9.BackColor = colorFilter.ColorFilter(test, "fB9");
 
             // color debuging 
-            label3.Text = colorFilter.ColorFilterString(test, "fB1");
-            label4.Text = colorFilter.ColorFilterString(test, "fB2");
-            label5.Text = colorFilter.ColorFilterString(test, "fB3");
-            label6.Text = colorFilter.ColorFilterString(test, "fB4");
+            textBox1.AppendText("Face R\n");
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fR1"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fR2"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fR3"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fR4"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fR6"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fR7"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fR8"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fR9"));
 
+            textBox1.AppendText("Face B\n");
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fB1"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fB2"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fB3"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fB4"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fB6"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fB7"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fB8"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fB9"));
+
+            textBox1.AppendText("Face D\n");
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fD1"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fD2"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fD3"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fD4"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fD6"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fD7"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fD8"));
+            textBox1.AppendText(colorFilter.ColorFilterString(test, "fD9"));
         }
 
 
-        private Rectangle[] GenerateCallibrBox(int width, int hight)
+        private Rectangle[] GenerateCallibrBox1(Size size, int t)
         {
+            ColorDetection colorDetection = new ColorDetection();
             Rectangle[] CallibrBox;
+            
 
-            int[,] boxLocation = { { 255, 55 }, { 195, 78 }, { 130, 109 }, { 180, 133 }, { 243, 104 }, { 307, 74 }, { 363, 99 }, { 304, 132 }, { 232, 170 }, { 100, 153 }, { 111, 213 }, { 125, 278 }, { 167, 310 }, { 158, 250 }, { 147, 185 }, { 202, 219 }, { 213, 293 }, { 217, 354 }, { 268, 231 }, { 336, 189 }, { 401, 151 }, { 399, 223 }, { 341, 263 }, { 271, 304 }, { 275, 370 }, { 339, 323 }, { 397, 287 } };
-
-            CallibrBox = new Rectangle[boxLocation.GetLength(0)];
-            for (int i = 0; i < boxLocation.GetLength(0); i++)
+            if (t == 1)
             {
-                CallibrBox[i] = new Rectangle(boxLocation[i, 0], boxLocation[i, 1], width, hight);
+                CallibrBox = new Rectangle[colorDetection.FU.GetLength(0)];
+                for (int i = 0; i < colorDetection.FU.Length; i++)
+                {
+                    CallibrBox[i] = new Rectangle(colorDetection.FU[i], size);
+                }
+                return CallibrBox;
             }
-            return CallibrBox;
+            else if (t == 2)
+            {
+                CallibrBox = new Rectangle[colorDetection.FL.GetLength(0)];
+                for (int i = 0; i < colorDetection.FL.Length; i++)
+                {
+                    CallibrBox[i] = new Rectangle(colorDetection.FL[i], size);
+
+                }
+                return CallibrBox;
+            }
+            else
+            {
+                CallibrBox = new Rectangle[colorDetection.FF.GetLength(0)];
+                for (int i = 0; i < colorDetection.FF.Length; i++)
+                {
+
+                    CallibrBox[i] = new Rectangle(colorDetection.FF[i], size);
+                    
+                }
+                return CallibrBox;
+            }
         }
 
+        private Rectangle[] GenerateCallibrBox2(Size size, int t)
+        {
+            ColorDetectionC2 colorDetectionC2 = new ColorDetectionC2();
+            Rectangle[] CallibrBox;
+           
+            if (t == 1)
+            {
+                CallibrBox = new Rectangle[colorDetectionC2.FR.GetLength(0)];
+                for (int i = 0; i < colorDetectionC2.FR.Length; i++)
+                {
+                    CallibrBox[i] = new Rectangle(colorDetectionC2.FR[i], size);
+                }
+                return CallibrBox;
+            }
+            else if (t == 2)
+            {
+                CallibrBox = new Rectangle[colorDetectionC2.FD.GetLength(0)];
+                for (int i = 0; i < colorDetectionC2.FD.Length; i++)
+                {
+                    CallibrBox[i] = new Rectangle(colorDetectionC2.FD[i], size);
+
+                }
+                return CallibrBox;
+            }
+            else
+            {
+                CallibrBox = new Rectangle[colorDetectionC2.FB.GetLength(0)];
+                for (int i = 0; i < colorDetectionC2.FB.Length; i++)
+                {
+
+                    CallibrBox[i] = new Rectangle(colorDetectionC2.FB[i], size);
+                   
+                }
+                return CallibrBox;
+            }
+            
+        }
+
+        public double Gammavalue = 0.23999;
 
         private void VideoSourceCamera1_NewFrame(object sender, ref Bitmap image)
         {
             Pen Black = new Pen(Color.Black, 3);
             Graphics g1 = Graphics.FromImage(image);
+            Size size = new Size(15, 15);
+            int t = 1;
 
-            g1.DrawRectangles(Black, GenerateCallibrBox(30, 30));
-            g1.DrawLine(Black, 93, 128, 253, 233);
-            g1.DrawLine(Black, 443, 117, 253, 233);
-            g1.DrawLine(Black, 271, 420, 253, 233);
-            g1.DrawLine(Black, 132, 302, 93, 128);
-            g1.DrawLine(Black, 132, 302, 271, 420);
-            g1.DrawLine(Black, 271, 41, 93, 128);
-            g1.DrawLine(Black, 271, 41, 443, 117);
-            g1.DrawLine(Black, 440, 308, 443, 117);
-            g1.DrawLine(Black, 440, 308, 271, 420);
+            g1.DrawRectangles(Black, GenerateCallibrBox1(size, t));
+            t++;
+            g1.DrawRectangles(Black, GenerateCallibrBox1(size, t));
+            t++;
+            g1.DrawRectangles(Black, GenerateCallibrBox1(size, t));
+            g1.DrawLine(Black, 298, 6, 77, 115);
+            g1.DrawLine(Black, 298, 6, 516, 111);
+            g1.DrawLine(Black, 516, 111, 289, 265);
+            g1.DrawLine(Black, 516, 111, 486, 338);
+            g1.DrawLine(Black, 77, 115, 289, 265);
+            g1.DrawLine(Black, 77, 115, 124, 339);
+            g1.DrawLine(Black, 124, 339, 287, 478);
+            g1.DrawLine(Black, 287, 478, 289, 265);
+            g1.DrawLine(Black, 287, 478, 486, 338);
 
-
+            BrightnessCorrection BCfilter = new BrightnessCorrection(-20);
+            GammaCorrection filter = new GammaCorrection(Gammavalue);
+            // apply the filter
+            //filter.ApplyInPlace(image);
+            //BCfilter.ApplyInPlace(image);
         }
 
         private void VideoSourceCamera2_NewFrame(object sender, ref Bitmap image)
         {
             Pen Black = new Pen(Color.Black, 3);
             Graphics g1 = Graphics.FromImage(image);
-            
-            g1.DrawRectangles(Black, GenerateCallibrBox(30, 30));
-            g1.DrawLine(Black, 93, 128, 253, 233);
-            g1.DrawLine(Black, 443, 117, 253, 233);
-            g1.DrawLine(Black, 271, 420, 253, 233);
-            g1.DrawLine(Black, 132, 302, 93, 128);
-            g1.DrawLine(Black, 132, 302, 271, 420);
-            g1.DrawLine(Black, 271, 41, 93, 128);
-            g1.DrawLine(Black, 271, 41, 443, 117);
-            g1.DrawLine(Black, 440, 308, 443, 117);
-            g1.DrawLine(Black, 440, 308, 271, 420);
+            Size size =  new Size(15,15);
+            int t = 1;
 
-            BrightnessCorrection BCfilter = new BrightnessCorrection(-40);
-            GammaCorrection filter = new GammaCorrection(0.23999);
+            g1.DrawRectangles(Black, GenerateCallibrBox2(size, t));
+            t++;
+            g1.DrawRectangles(Black, GenerateCallibrBox2(size, t));
+            t++;
+            g1.DrawRectangles(Black, GenerateCallibrBox2(size, t));
+            g1.DrawLine(Black, 258, 0, 263, 215);
+            g1.DrawLine(Black, 263, 215, 36, 347);
+            g1.DrawLine(Black, 263, 215, 493, 347);
+            g1.DrawLine(Black, 36, 347, 71, 110);
+            g1.DrawLine(Black, 36, 347, 265, 442);
+            g1.DrawLine(Black, 493, 347, 265, 442);
+            g1.DrawLine(Black, 493, 347, 468, 108);
+            g1.DrawLine(Black, 71, 110, 198, 0);
+            g1.DrawLine(Black, 468, 108, 325, 0);
+
+            BrightnessCorrection BCfilter = new BrightnessCorrection(-20);
+            GammaCorrection filter = new GammaCorrection(Gammavalue);
+            HSLFiltering hslfilter = new HSLFiltering();
+            // configure the filter
+            hslfilter.Hue = new IntRange(180, 275);
+            hslfilter.Saturation = new Range(0.6f,1);
+            hslfilter.Luminance = new Range(0.1f, 1);
+            ColorFiltering BlueFilter = new ColorFiltering();
+            // configure the filter to keep red object only
+            BlueFilter.Red = new IntRange(110, 255);
+            BlueFilter.Green = new IntRange(0, 110);
+            BlueFilter.Blue = new IntRange(0, 110);
+
+            // create filter
+            ExtractChannel Gfilter = new ExtractChannel(RGB.B);
             // apply the filter
+            //image = Gfilter.Apply(image);
+
+            // apply the filter
+            //image = Grayscale.CommonAlgorithms.BT709.Apply(image);
             //filter.ApplyInPlace(image);
-            BCfilter.ApplyInPlace(image);
+            //BCfilter.ApplyInPlace(image);
+            //BlueFilter.ApplyInPlace(image);
+            //hslfilter.ApplyInPlace(image);
+
+
+
         }
 
 
@@ -1361,7 +1537,7 @@ namespace Rubiks_cube_solver_app
 
             CheckBoxColor();
 
-            if( false) //GreenBox != 9 || BlueBox != 9 || RedBox != 9 || YellowBox != 9 || WhiteBox != 9 || OrangeBox != 9 || OtherBox > 0)
+            if( GreenBox != 9 || BlueBox != 9 || RedBox != 9 || YellowBox != 9 || WhiteBox != 9 || OrangeBox != 9 || OtherBox > 0)
             {
                 MessageBox.Show("Some Colors are wrong! \nCheck the colors.", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1411,26 +1587,29 @@ namespace Rubiks_cube_solver_app
 
         private void Arduino_Com(int count)
         {
-            if (ArduinoSerial.IsOpen)
+            try
             {
-                string[] ConvertedMessage = ArrayConvert();
-                    
-                    
-
-                if (Array_size != 0 && count < Array_size && scramble == false)
+                if (ArduinoSerial.IsOpen)
                 {
-                    ArduinoSerial.Write(ConvertedMessage[count]);
-                    messageSend = ConvertedMessage[count];
-                }
+                    string[] ConvertedMessage = ArrayConvert();
 
-                if(scramble == true && count < 30)
-                {
-                    ArduinoSerial.Write(ConvertedMessage[count]);
-                    messageSend = ConvertedMessage[count];
+
+
+                    if (Array_size != 0 && count < Array_size && scramble == false)
+                    {
+                        ArduinoSerial.Write(ConvertedMessage[count]);
+                        messageSend = ConvertedMessage[count];
+                    }
+
+                    if (scramble == true && count < 30)
+                    {
+                        ArduinoSerial.Write(ConvertedMessage[count]);
+                        messageSend = ConvertedMessage[count];
+                    }
+
                 }
-             
             }
-            else
+            catch
             {
                 MessageBox.Show("Port not open!!", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1787,8 +1966,20 @@ namespace Rubiks_cube_solver_app
             //label3.Text +=  "! ";
         }
 
-       
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Random_Scrambler scrambler = new Random_Scrambler();
 
+            string ScrambleCube = scrambler.Return_Combo();
+
+            SolutionBox.Text = ScrambleCube;
+
+            TurnSequence = ScrambleCube;
+
+            count_message_array = 0;
+            scramble = true;
+            Arduino_Com(count_message_array);
+        }
     }
 }
 
