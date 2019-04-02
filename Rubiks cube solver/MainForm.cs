@@ -138,8 +138,11 @@ namespace Rubiks_cube_solver_app
 
         private void Camera2Combo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Camera2 = new VideoCaptureDevice(videoDevices[Camera2Combo.SelectedIndex].MonikerString);
-            EnumeratedSupportedFrameSizes(Camera2, 2);
+            if (videoDevices.Count != 0)
+            {
+                Camera2 = new VideoCaptureDevice(videoDevices[Camera2Combo.SelectedIndex].MonikerString);
+                EnumeratedSupportedFrameSizes(Camera2, 2);
+            }
         }
 
         //new port selected
